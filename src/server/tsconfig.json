@@ -1,0 +1,17 @@
+{
+    "compilerOptions": {
+        "allowJs": true,
+        "module": "commonjs",
+        "esModuleInterop": true,
+        "allowSyntheticDefaultImports": true,
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "target": "es6",
+        "moduleResolution": "node",
+        "typeRoots": [
+            "node_modules/@types",
+            "src/@types"
+        ],
+        "baseUrl": "."
+    }
+}
