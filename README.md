@@ -13,7 +13,8 @@ There are a few easily configurable global variables in `src/server/index.ts` th
 
 ## Credits
 ### PixelBlaster
-I read this project's source a lot to figure out how to use TypeScript: (https://git.agiri.ninja/akari/pixelblaster)[https://git.agiri.ninja/akari/pixelblaster]
+I read this project's source a lot to figure out how to use TypeScript.
+See this project here: [https://git.agiri.ninja/akari/pixelblaster](https://git.agiri.ninja/akari/pixelblaster)
 
 ### jsSHA2
-The clientside script of this uses jsSHA2 by Angel Marin, available here: (https://anmar.eu.org/projects/jssha2/)[https://anmar.eu.org/projects/jssha2/]
+The clientside script of this uses jsSHA2 by Angel Marin, available here: [https://anmar.eu.org/projects/jssha2/](https://anmar.eu.org/projects/jssha2/)
