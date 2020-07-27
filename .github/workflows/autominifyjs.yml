@@ -9,5 +9,5 @@ jobs:
       - name: Auto Minify
         uses: nizarmah/auto-minify@v1.8
         with:
-          directory: src/frontend
+          directory: 'src/frontend'
           maxdepth: 1
