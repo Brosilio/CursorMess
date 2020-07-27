@@ -1,6 +1,18 @@
-//document.childNodes[0].appendChild(document.createElement('div').setAttribute())
+/*
+* CursorMess
+* https://github.com/brosilio/cursormess
+* Copyright (C) 2020 Brosilio
+* Licensed under the license specified at:
+*   https://brosilio.github.io/CursorMess/LICENSE.txt
+*   https://github.com/Brosilio/CursorMess/blob/master/LICENSE.txt
+*/
+
+/* prevent multiple instances of this script from running on a client at once */
+if (cursorMess != undefined)
+    return;
 
 /* -- variables -- */
+const CURSORMESS_WEBSOCKET_HOST_ENDPOINT = "wss://brosil.io/cursormess";
 const cursorMess = {};
 cursorMess.id = null;
 cursorMess.cursors = {};
@@ -12,7 +24,7 @@ cursorMess.myLastCurPos = {
     x: 0,
     y: 0
 };
-cursorMess.ws = new WebSocket("wss://brosil.io/cursormess");
+cursorMess.ws = new WebSocket(CURSORMESS_WEBSOCKET_HOST_ENDPOINT);
 
 /* -- shit -- */
 cursorMess.ws.onopen = () => {
@@ -29,20 +41,18 @@ cursorMess.ws.onopen = () => {
         };
     }
 
-    // send join command with the url hash
-    cursorMess.ws.send(JSON.stringify(
-        {
+    /* send join command with the url hash */
+    cursorMess.ws.send(JSON.stringify({
             c: 'j',
             urlHash: hex_sha256(document.location.href)
         }
     ));
-    console.log(document.location);
-    console.log(hex_sha256(document.location));
 
-    //cursorMess.myCur.x /= window.innerWidth// || document.documentElement.clientWidth || document.body.clientWidth;
-    //cursorMess.myCur.y /= window.innerHeight// || document.documentElement.clientHeight || document.body.clientHeight;
+    /* convert to percentage */
+    cursorMess.myCur.x /= document.body.clientWidth;
+    cursorMess.myCur.y /= document.body.clientHeight;
 
-    // update position every 1000ms (if the position has changed since the last update)
+    /* update position every 1000ms (if the position has changed since the last update) */
     setInterval(() => {
         let pos = cursorMess.myCur;
         if (pos.x != cursorMess.myLastCurPos.x || pos.y != cursorMess.myLastCurPos.y) {
@@ -51,6 +61,8 @@ cursorMess.ws.onopen = () => {
                 x: cursorMess.myCur.x,
                 y: cursorMess.myCur.y
             }));
+
+            /* can't just set myLastCursorPos = pos because javascript is garbage. some weird ref bullshit */
             cursorMess.myLastCurPos = {
                 x: pos.x,
                 y: pos.y
@@ -58,6 +70,11 @@ cursorMess.ws.onopen = () => {
         }
 
     }, 100);
+
+    /* send a ping every 10 seconds to prevent the websocket from shidding and fardding */
+    setInterval(() => {
+        cursorMess.ws.send('{ "c":"ping" }');
+    }, 10000);
 };
 
 cursorMess.ws.onmessage = raw => {
@@ -69,6 +86,17 @@ cursorMess.ws.onmessage = raw => {
         ws.send(JSON.stringify(obj));
     }
 
+    switch (data.c) {
+        case 'pong':
+        case 'ping':
+            return;
+        case 'p': updateCursor(data.id, data.x, data.y); break;
+        case 'r': removeCursor(data.id); break;
+        case 'a': addCursor(data.id); break;
+        case '!': break;
+        // TODO: ^ this feature ^
+    }
+
     function addCursor(id) {
         let cur = document.createElement('img');
         cur.setAttribute('src', 'https://brosilio.github.io/fuckyou.png');
@@ -77,7 +105,7 @@ cursorMess.ws.onmessage = raw => {
         document.body.appendChild(cur);
     }
 
-    // fade out cursor <img> then eviscerate it
+    /* set cursor <img> opacity to 0 then eviscerate its DOM element */
     function removeCursor(id) {
         cursorMess.cursors[id].style.opacity = "0";
         setTimeout(() => {
@@ -85,24 +113,28 @@ cursorMess.ws.onmessage = raw => {
         }, 1000);
     }
 
-    // update the position. also only update opacity after position has been received, otherwise all cursors
-    // will start in the top left and move to their real position which looks like ass
+    /* update a cursor's position */
     function updateCursor(id, x, y) {
-        cursorMess.cursors[id].style.left = `${x}px`;
-        cursorMess.cursors[id].style.top = `${y}px`;
+        cursorMess.cursors[id].style.left = `${x}%`;
+        cursorMess.cursors[id].style.top = `${y}%`;
         cursorMess.cursors[id].style.opacity = "0.8";
-    }
-
-    switch (data.c) {
-        case 'i': cursorMess.id = data.id; break;
-        case 'p': updateCursor(data.id, data.x, data.y); break;
-        case 'r': removeCursor(data.id); break;
-        case 'a': addCursor(data.id); break;
     }
 };
 
 cursorMess.ws.onclose = () => {
     console.log('CursorMess lost connection to server.');
+
+    /* fade out & delete all cursors */
+    for (const cur in cursorMess.cursors) {
+        if (cur != undefined && cur != null) {
+            removeCursor(cur);
+        }
+    }
+    
+    /* try reconnecting */
+    setTimeout(() => {
+        cursorMess.ws = new WebSocket(CURSORMESS_WEBSOCKET_HOST_ENDPOINT);
+    }, (1000));
 };
 
 // ------- other stuff -------- //

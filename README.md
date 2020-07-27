@@ -1,7 +1,11 @@
 # CursorMess
-[https://github.com/brosilio/cursormess](CursorMess repository)
+[CursorMess Repository @ GitHub](https://github.com/brosilio/cursormess)
+
 This is a Node.js server and some dumb clientside JS to share the cursors of everyone using a particular webpage.
 There's no actual functionality, (ie. clicking on other users' screens) but it's a cool aesthetic.
+
+## Demo
+Hop over to my GitHub Pages site to see it in action: [https://brosilio.github.io/](https://brosilio.github.io/)
 
 ## To use
 Simply include the [`src/frontend/cursormess.js`](src/frontend/cursormess.js) file on your webpages. That's it.
@@ -26,4 +30,4 @@ See this project here: [https://git.agiri.ninja/akari/pixelblaster](https://git.
 The clientside script of this uses jsSHA2 by Angel Marin, available here: [https://anmar.eu.org/projects/jssha2/](https://anmar.eu.org/projects/jssha2/)
 
 ## License
-This is licensed under the [MIT license](LICENSE).
+This is licensed under the [MIT license](LICENSE.txt).

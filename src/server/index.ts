@@ -1,3 +1,12 @@
+/*
+* CursorMess
+* https://github.com/brosilio/cursormess
+* Copyright (C) 2020 Brosilio
+* Licensed under the license specified at:
+*   https://brosilio.github.io/CursorMess/LICENSE.txt
+*   https://github.com/Brosilio/CursorMess/blob/master/LICENSE.txt
+*/
+
 import express from 'express';
 import expressws from 'express-ws';
 import WebSocket from 'ws';
@@ -11,7 +20,9 @@ interface Asshole {
     ping: any,
     cursorCount: number,
     lastUpdate: number,
-    urlHash: string
+    urlHash: string,
+    xPos: number,
+    yPos: number
 }
 
 console.debug('cursormess');
@@ -82,11 +93,11 @@ function addToRoom(client) {
     if (rooms[room] == undefined) {
         rooms[room] = [];
     }
-    
+
     rooms[room].push(client);
     broadacastNewCursor(room, client);
 
-    console.log("someone joined room" + room);
+    console.log("someone joined room: " + room);
 }
 
 app.ws("/cursormess", (ws, req) => {
@@ -97,7 +108,9 @@ app.ws("/cursormess", (ws, req) => {
         ping: null,
         cursorCount: 0,
         lastUpdate: Date.now(),
-        urlHash: null
+        urlHash: null,
+        xPos: 0,
+        yPos: 0
     };
 
     function send(data) {
@@ -116,7 +129,7 @@ app.ws("/cursormess", (ws, req) => {
 
     ws.on('close', () => {
         rooms[client.urlHash].splice(rooms[client.urlHash].indexOf(client), 1);
-        if(rooms[client.urlHash].length == 0) {
+        if (rooms[client.urlHash].length == 0) {
             console.log("nobody left in room " + client.urlHash);
             rooms[client.urlHash] = undefined;
             return; // dont need to send updates to the room cause its gone
@@ -134,34 +147,46 @@ app.ws("/cursormess", (ws, req) => {
 
         try {
             client.lastUpdate = Date.now();
-            // broadcast incoming data
             // TODO: currently, this will send *any* incoming data to all the clients. rework to only send the valid params to avoid exploits
             const data = JSON.parse(raw as string);
             let msg = {
                 ...data,
                 id: client.id
             };
-            // is join message, contains url of client.
+            // TODO: refactor and make look nicer
+            /* is join message, contains url of client. */
             if (msg.c == 'j') {
                 client.urlHash = msg.urlHash;
                 addToRoom(client);
                 for (let i = 0; i < rooms[client.urlHash].length; i++) {
                     const c = rooms[client.urlHash][i];
+
+                    /* don't add one's own cursor */
                     if (c.id == client.id)
                         continue;
 
-                    let msg = {
+                    send(JSON.stringify({
                         c: 'a',
                         id: c.id
-                    };
-
-                    send(JSON.stringify(msg));
+                    }));
                     client.cursorCount++;
 
                     if (client.cursorCount >= MAX_CURSORS_PER_CLIENT)
                         break;
                 }
             } else {
+                if (msg.c == 'p') {
+                    /* ensure the position percentage stays within 0 to 100 percent */
+                    if (msg.x > 100) msg.x = 100;
+                    if (msg.y > 100) msg.y = 100;
+                    if (msg.x < 0) msg.x = 0;
+                    if (msg.y < 0) msg.y = 0;
+
+                    /* update stored position */
+                    client.xPos = msg.x;
+                    client.yPos = msg.y;
+                }
+
                 broadcast(client.urlHash, msg, client);
             }
         }
