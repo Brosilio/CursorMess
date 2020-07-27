@@ -12,7 +12,7 @@ cursorMess.myLastCurPos = {
     x: 0,
     y: 0
 };
-cursorMess.ws = new WebSocket("ws://localhost:6969/cursormess");
+cursorMess.ws = new WebSocket("ws://brosil.io:6969/cursormess");
 
 /* -- shit -- */
 cursorMess.ws.onopen = () => {
