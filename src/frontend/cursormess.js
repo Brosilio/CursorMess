@@ -88,8 +88,8 @@ cursorMess.ws.onmessage = raw => {
     // update the position. also only update opacity after position has been received, otherwise all cursors
     // will start in the top left and move to their real position which looks like ass
     function updateCursor(id, x, y) {
-        cursorMess.cursors[id].style.left = x;
-        cursorMess.cursors[id].style.top = y;
+        cursorMess.cursors[id].style.left = `${x}px`;
+        cursorMess.cursors[id].style.top = `${y}px`;
         cursorMess.cursors[id].style.opacity = "0.8";
     }
 
