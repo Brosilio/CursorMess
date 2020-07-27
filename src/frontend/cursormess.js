@@ -46,8 +46,8 @@ cursorMess.ws.onopen = () => {
     ));
 
     /* convert to percentage */
-    cursorMess.myCur.x = cursormes.myCur.x / document.body.clientWidth;
-    cursorMess.myCur.y = cursormes.myCur.y / document.body.clientHeight;
+    cursorMess.myCur.x = cursorMess.myCur.x / document.body.clientWidth;
+    cursorMess.myCur.y = cursorMess.myCur.y / document.body.clientHeight;
 
     /* update position every 1000ms (if the position has changed since the last update) */
     setInterval(() => {
