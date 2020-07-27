@@ -1,0 +1,10 @@
+name: AutoMinifyJS
+on:
+  push:
+    branches: [ master ]
+jobs:
+  minify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Auto Minify
+        uses: nizarmah/auto-minify@v1.8
