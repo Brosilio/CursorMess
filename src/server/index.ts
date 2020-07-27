@@ -149,6 +149,11 @@ app.ws("/cursormess", (ws, req) => {
             client.lastUpdate = Date.now();
             // TODO: currently, this will send *any* incoming data to all the clients. rework to only send the valid params to avoid exploits
             const data = JSON.parse(raw as string);
+            
+            /* ping and pong only exist to keep the websocket alive. don't need to handle it */
+            if(data.c == 'ping' || data.c == 'pong')
+                return;
+
             let msg = {
                 ...data,
                 id: client.id

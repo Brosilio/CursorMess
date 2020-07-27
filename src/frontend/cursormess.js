@@ -7,10 +7,6 @@
 *   https://github.com/Brosilio/CursorMess/blob/master/LICENSE.txt
 */
 
-/* prevent multiple instances of this script from running on a client at once */
-if (cursorMess != undefined)
-    return;
-
 /* -- variables -- */
 const CURSORMESS_WEBSOCKET_HOST_ENDPOINT = "wss://brosil.io/cursormess";
 const cursorMess = {};
