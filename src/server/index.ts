@@ -3,13 +3,13 @@
 * https://github.com/brosilio/cursormess
 * Copyright (C) 2020 Brosilio
 * Licensed under the license specified at:
-*   https://brosilio.github.io/CursorMess/LICENSE.txt
 *   https://github.com/Brosilio/CursorMess/blob/master/LICENSE.txt
 */
 
 import express from 'express';
 import expressws from 'express-ws';
 import WebSocket from 'ws';
+import msgpack from 'msgpack-lite';
 
 const MAX_CURSORS_PER_CLIENT = 16;
 const CLIENT_IDLE_TIMEOUT_SECONDS = 64;
@@ -131,7 +131,6 @@ app.ws("/cursormess", (ws, req) => {
         if (rooms[client.urlHash] == undefined)
             return;
         try {
-
             rooms[client.urlHash].splice(rooms[client.urlHash].indexOf(client), 1);
             if (rooms[client.urlHash].length == 0) {
                 console.log("nobody left in room " + client.urlHash);
