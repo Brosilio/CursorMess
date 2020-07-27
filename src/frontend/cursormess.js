@@ -71,7 +71,7 @@ cursorMess.ws.onmessage = raw => {
 
     function addCursor(id) {
         let cur = document.createElement('img');
-        cur.setAttribute('src', 'fuckyou.png');
+        cur.setAttribute('src', 'https://brosilio.github.io/fuckyou.png');
         cur.setAttribute('style', `position: fixed; opacity: 0; transition: 1s linear;`);
         cursorMess.cursors[id] = cur;
         document.childNodes[0].appendChild(cur);
