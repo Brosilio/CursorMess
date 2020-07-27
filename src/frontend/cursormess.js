@@ -45,19 +45,18 @@ cursorMess.ws.onopen = () => {
     }
     ));
 
-    /* convert to percentage */
-    cursorMess.myCur.x = cursorMess.myCur.x / document.body.clientWidth;
-    cursorMess.myCur.y = cursorMess.myCur.y / document.body.clientHeight;
-
     /* update position every 1000ms (if the position has changed since the last update) */
     setInterval(() => {
         let pos = cursorMess.myCur;
         if (pos.x != cursorMess.myLastCurPos.x || pos.y != cursorMess.myLastCurPos.y) {
-            cursorMess.ws.send(JSON.stringify({
+            let cockSucker = JSON.stringify({
                 c: 'p',
-                x: cursorMess.myCur.x,
-                y: cursorMess.myCur.y
-            }));
+                /* convert to percentage */
+                x: cursorMess.myCur.x / document.body.clientWidth,
+                y: cursorMess.myCur.y / document.body.clientHeight
+            });
+            console.log(cockSucker);
+            cursorMess.ws.send(cockSucker);
 
             /* can't just set myLastCursorPos = pos because javascript is garbage. some weird ref bullshit */
             cursorMess.myLastCurPos = {
