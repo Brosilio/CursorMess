@@ -57,7 +57,7 @@ cursorMess.ws.onopen = () => {
             };
         }
 
-    }, 1000);
+    }, 100);
 };
 
 cursorMess.ws.onmessage = raw => {
