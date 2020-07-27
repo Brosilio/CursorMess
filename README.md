@@ -12,7 +12,7 @@ Simply include the [`src/frontend/cursormess.js`](src/frontend/cursormess.js) fi
 
 I've made it available through github pages, so you can include it directly from Github like this:
 ```html
-<script src="https://brosilio.github.io/CursorMess/src/frontend/cursormess.js"></script>
+<script src="https://brosilio.github.io/CursorMess/src/frontend/cursormess.min.js"></script>
 ```
 
 I host a server somewhere currently, but you're welcome to host your own. Just change the WebSocket
