@@ -7,10 +7,12 @@ There's no actual functionality, (ie. clicking on other users' screens) but it's
 ## Demo
 Hop over to my GitHub Pages site to see it in action: [https://brosilio.github.io/](https://brosilio.github.io/)
 
+The demo obviously only works if other users are viewing the page. You can open it in multiple tabs at once if nobody else is there.
+
 ## To use
 Simply include the [`src/frontend/cursormess.js`](src/frontend/cursormess.js) file on your webpages. That's it.
 
-I've made it available through github pages, so you can include it directly from Github like this:
+I've made it available through GitHub Pages, so you can include it directly from GitHub like this:
 ```html
 <script src="https://brosilio.github.io/CursorMess/src/frontend/cursormess.min.js"></script>
 ```
