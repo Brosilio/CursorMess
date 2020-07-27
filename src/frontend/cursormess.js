@@ -24,6 +24,7 @@ cursorMess.ws = new WebSocket(CURSORMESS_WEBSOCKET_HOST_ENDPOINT);
 
 /* -- shit -- */
 cursorMess.ws.onopen = () => {
+    console.log("CursorMess connected");
     if (window.Event) {
         document.captureEvents(Event.MOUSEMOVE);
         document.onmousemove = e => {
@@ -39,14 +40,14 @@ cursorMess.ws.onopen = () => {
 
     /* send join command with the url hash */
     cursorMess.ws.send(JSON.stringify({
-            c: 'j',
-            urlHash: hex_sha256(document.location.href)
-        }
+        c: 'j',
+        urlHash: hex_sha256(document.location.href)
+    }
     ));
 
     /* convert to percentage */
-    cursorMess.myCur.x /= document.body.clientWidth;
-    cursorMess.myCur.y /= document.body.clientHeight;
+    cursorMess.myCur.x = cursormes.myCur.x / document.body.clientWidth;
+    cursorMess.myCur.y = cursormes.myCur.y / document.body.clientHeight;
 
     /* update position every 1000ms (if the position has changed since the last update) */
     setInterval(() => {
@@ -126,7 +127,7 @@ cursorMess.ws.onclose = () => {
             removeCursor(cur);
         }
     }
-    
+
     /* try reconnecting */
     setTimeout(() => {
         cursorMess.ws = new WebSocket(CURSORMESS_WEBSOCKET_HOST_ENDPOINT);
