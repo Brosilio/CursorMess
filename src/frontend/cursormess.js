@@ -52,10 +52,10 @@ cursorMess.ws.onopen = () => {
             let cockSucker = JSON.stringify({
                 c: 'p',
                 /* convert to percentage */
-                x: cursorMess.myCur.x / document.body.clientWidth * 100,
-                y: cursorMess.myCur.y / document.body.clientHeight * 100
+                x: cursorMess.myCur.x / Math.max(document.body.clientWidth, window.innerWidth) * 100,
+                y: cursorMess.myCur.y / Math.max(document.body.clientHeight, window.innerHeight) * 100
             });
-            
+
             cursorMess.ws.send(cockSucker);
 
             /* can't just set myLastCursorPos = pos because javascript is garbage. some weird ref bullshit */
