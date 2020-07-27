@@ -128,18 +128,23 @@ app.ws("/cursormess", (ws, req) => {
     // tell the new client about all the other clients
 
     ws.on('close', () => {
-        rooms[client.urlHash].splice(rooms[client.urlHash].indexOf(client), 1);
-        if (rooms[client.urlHash].length == 0) {
-            console.log("nobody left in room " + client.urlHash);
-            rooms[client.urlHash] = undefined;
-            return; // dont need to send updates to the room cause its gone
-        }
-        console.log(`${client.id}: closed`);
-        let msg = {
-            c: 'r',
-            id: client.id
-        }
-        broadcast(client.urlHash, msg, client);
+        if (rooms[client.urlHash] == undefined)
+            return;
+        try {
+
+            rooms[client.urlHash].splice(rooms[client.urlHash].indexOf(client), 1);
+            if (rooms[client.urlHash].length == 0) {
+                console.log("nobody left in room " + client.urlHash);
+                rooms[client.urlHash] = undefined;
+                return; // dont need to send updates to the room cause its gone
+            }
+            console.log(`${client.id}: closed`);
+            let msg = {
+                c: 'r',
+                id: client.id
+            }
+            broadcast(client.urlHash, msg, client);
+        } catch { }
     });
 
     ws.on('message', raw => {
@@ -149,9 +154,9 @@ app.ws("/cursormess", (ws, req) => {
             client.lastUpdate = Date.now();
             // TODO: currently, this will send *any* incoming data to all the clients. rework to only send the valid params to avoid exploits
             const data = JSON.parse(raw as string);
-            
+
             /* ping and pong only exist to keep the websocket alive. don't need to handle it */
-            if(data.c == 'ping' || data.c == 'pong')
+            if (data.c == 'ping' || data.c == 'pong')
                 return;
 
             let msg = {
