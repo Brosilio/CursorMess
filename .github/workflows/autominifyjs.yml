@@ -6,18 +6,16 @@ jobs:
   minify:
     runs-on: ubuntu-latest
     steps:
-      - name: fuck you
-        run: ls
-        
+      - uses: actions/checkout@v2.3.1
+      
       - name: Auto Minify
         uses: nizarmah/auto-minify@v1.8
         with:
           maxdepth: 1
-          directory: "CursorMess/src/frontend"
+          directory: "./src/frontend"
       
       - name: Auto committing minified files
         uses: stefanzweifel/git-auto-commit-action@v3.0.0
         with:
           commit_message: "Github Action: Auto Minified JS and CSS files"
           branch: ${{ github.ref }}
-          repository: "CursorMess'"
