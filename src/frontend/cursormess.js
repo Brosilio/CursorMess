@@ -74,14 +74,14 @@ cursorMess.ws.onmessage = raw => {
         cur.setAttribute('src', 'https://brosilio.github.io/fuckyou.png');
         cur.setAttribute('style', `position: fixed; opacity: 0; transition: 1s linear;`);
         cursorMess.cursors[id] = cur;
-        document.childNodes[0].appendChild(cur);
+        document.body.appendChild(cur);
     }
 
     // fade out cursor <img> then eviscerate it
     function removeCursor(id) {
         cursorMess.cursors[id].style.opacity = "0";
         setTimeout(() => {
-            document.childNodes[0].removeChild(cursorMess.cursors[id]);
+            document.body.removeChild(cursorMess.cursors[id]);
         }, 1000);
     }
 
