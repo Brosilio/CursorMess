@@ -7,7 +7,7 @@
 */
 
 /* -- variables -- */
-const CURSORMESS_WEBSOCKET_HOST_ENDPOINT = "wss://brosil.io/cursormess";
+const CURSORMESS_WEBSOCKET_HOST_ENDPOINT = "wss://phantom.brosil.io/cursormess";
 const cursorMess = {};
 cursorMess.id = null;
 cursorMess.cursors = {};
